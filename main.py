@@ -13,7 +13,7 @@ class Game:
     def __init__(self):
         pg.mixer.pre_init(44100, -16, 2, 2048)  #bug soundp
         pg.init()
-        self.window = pg.display.set_mode((WIDTH, HEIGHT), pg.FULLSCREEN)
+        self.window = pg.display.set_mode((WIDTH, HEIGHT), pg.FULLSCREE)
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         pg.key.set_repeat(50, 100)
