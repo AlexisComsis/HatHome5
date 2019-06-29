@@ -291,6 +291,7 @@ class Mob(pg.sprite.Sprite):
         self.game = game
         pg.sprite.Sprite.__init__(self, self.groups)
         self.bank_image = game.globu_img_bank
+        self.bank_angry_image = game.globu_angry_img_bank
         self.image = self.bank_image[0]
         self.real_rect = self.image.get_rect()
         self.rect = self.real_rect
@@ -313,9 +314,9 @@ class Mob(pg.sprite.Sprite):
     def footupdate(self):
         self.timer += 1
 
-        if self.timer <=15:
+        if self.timer <=5:
             self.moovestat = 0
-        elif self.timer <= 31:
+        elif self.timer <= 11 :
             self.moovestat = 1
         else:
             self.timer = 0
@@ -354,6 +355,7 @@ class Mob(pg.sprite.Sprite):
 
         if self.state:
             if self.distance < self.aware:
+                self.bank_image = self.bank_angry_image
 
                 self.rot = (self.game.player.pos - self.pos).angle_to(vec(1, 0))
                 self.footupdate()

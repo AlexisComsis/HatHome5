@@ -127,6 +127,8 @@ class Game:
         #globu
         self.globu_img_bank = self.separate(pg.image.load(self.img_folder + GLOBU_IMG).convert_alpha(), 55)
         self.globu_img = self.globu_img_bank[0]
+        self.globu_angry_img_bank = self.separate(pg.image.load(self.img_folder + GLOBU_IMG_ANGRY).convert_alpha(), 55)
+
 
         #chest
         self.chest_image_bank = self.separate(pg.image.load(self.img_folder + CHEST_IMAGE).convert_alpha(), 51)

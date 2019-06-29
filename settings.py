@@ -37,6 +37,7 @@ PLAYER_HIT_RECT = pg.Rect(0, 0, 78, 96)
 
 # Mob
 GLOBU_IMG = '\GlobuzarSprite.png'
+GLOBU_IMG_ANGRY = '\GlobuzarSpriteAngry.png'
 GLOBU_SPEED = 1000
 GLOBU_HIT_RECT = pg.Rect(0, 0, 52, 100)
 GLOBU_DROPCHEST = 0.01 #(4+1 chance / 100 car le 0 compt)
