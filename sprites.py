@@ -2,6 +2,7 @@ import pygame as pg
 from settings import *
 from chest import *
 vec = pg.math.Vector2
+from math import hypot
 from tilemap import collide_hit_rect
 import random
 from math import *
@@ -33,7 +34,7 @@ def collide_with_collidem(sprite, group, dir):
                     #if sprite.vel.x > -50:
                         #sprite.vel.x = -50
 
-            sprite.rect.centerx = sprite.pos.x
+            sprite.real_rect.centerx = sprite.pos.x
     if dir == 'y':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         for hit in hits:
@@ -58,18 +59,18 @@ def collide_with_collide(sprite, group, dir):
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         for hit in hits:
             if sprite.vel.x > 0:
-                sprite.pos.x = hit.rect.left - sprite.hit_rect.width / 2
+                sprite.pos.x = hit.real_rect.left - sprite.hit_rect.width / 2
             if sprite.vel.x < 0:
-                sprite.pos.x = hit.rect.right + sprite.hit_rect.width / 2
+                sprite.pos.x = hit.real_rect.right + sprite.hit_rect.width / 2
             sprite.vel.x = 0
-            sprite.rect.centerx = sprite.pos.x
+            sprite.real_rect.centerx = sprite.pos.x
     if dir == 'y':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         for hit in hits:
             if sprite.vel.y > 0:
-                sprite.pos.y = hit.rect.top - sprite.hit_rect.height / 2
+                sprite.pos.y = hit.real_rect.top - sprite.hit_rect.height / 2
             if sprite.vel.y < 0:
-                sprite.pos.y = hit.rect.bottom + sprite.hit_rect.height / 2
+                sprite.pos.y = hit.real_rect.bottom + sprite.hit_rect.height / 2
             sprite.vel.y = 0
             sprite.hit_rect.centery = sprite.pos.y
 
@@ -113,9 +114,10 @@ class Player(pg.sprite.Sprite):
         self.game = game
         self.bank_image = game.player_image_bank
         self.image = game.player_image_bank[0]
-        self.rect = self.image.get_rect()
-        self.hit_rect = self.rect
-        self.hit_rect.center = self.rect.center
+        self.real_rect = self.image.get_rect()
+        self.rect = self.real_rect
+        self.hit_rect = self.real_rect
+        self.hit_rect.center = self.real_rect.center
         self.vel = vec(0, 0)
         self.pos = vec(x, y) * TILESIZE
         self.moovestat = 0
@@ -165,14 +167,14 @@ class Player(pg.sprite.Sprite):
             if self.selectgun == 0 and self.cd == 0 :
                 self.gun.kill()
                 self.gun = Wavax(self.game)
-                self.gun.rect.center = (-10000,-10000)
+                self.gun.real_rect.center = (-10000,-10000)
                 self.selectgun = 1
                 self.cd = 50
 
             elif self.selectgun != 0 and self.cd == 0:
                 self.gun.kill()
                 self.gun = Gold45(self.game)
-                self.gun.rect.center = (-10000,-10000)
+                self.gun.real_rect.center = (-10000,-10000)
                 self.selectgun = 0
                 self.cd = 50
 
@@ -242,7 +244,7 @@ class Player(pg.sprite.Sprite):
         collide_with_collide(self, self.game.collidewithplayer, 'y')
         self.hit_rect.centerx = self.pos.x
         collide_with_collide(self, self.game.collidewithplayer, 'x')
-        self.rect.center = self.hit_rect.center
+        self.real_rect.center = self.hit_rect.center
         #MOUSE
         self.get_mouse()
         if self.cooldown > 0:
@@ -283,20 +285,21 @@ class Player(pg.sprite.Sprite):
         pg.draw.rect(surf, PURPLE, outline_rect, 3)
 
 class Mob(pg.sprite.Sprite):
-    def __init__(self, game, x, y, wall):
+    def __init__(self, game, x, y):
         self.timer = 0
         self.groups = game.all_sprites, game.mobs,  game.collidewithmobs #game.collidewithplayer,
         self.game = game
         pg.sprite.Sprite.__init__(self, self.groups)
         self.bank_image = game.globu_img_bank
         self.image = self.bank_image[0]
-        self.rect = self.image.get_rect()
-        self.hit_rect = self.rect
-        self.hit_rect.center = self.rect.center
+        self.real_rect = self.image.get_rect()
+        self.rect = self.real_rect
+        self.hit_rect = self.real_rect
+        self.hit_rect.center = self.real_rect.center
         self.pos = vec(x, y) * TILESIZE
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-        self.rect.center = self.pos
+        self.real_rect.center = self.pos
         self.rot = 0
         self.col = (0,0,0)
         self.damage = 20
@@ -340,7 +343,6 @@ class Mob(pg.sprite.Sprite):
     def update(self):
         self.distance = self.game.player.pos - self.pos
         self.distance = sqrt(self.distance[0]**2 + self.distance[1]**2)
-        #self.image.blit(self.game.wavax_image_bank_lvl1[2], (0, 30))
 
         if self.life <= 0:
             randstat = int(random.random() * 100)
@@ -357,12 +359,16 @@ class Mob(pg.sprite.Sprite):
                 self.footupdate()
                 self.get_dir()
                 #self.image = pg.transform.rotate(self.game.globu_img, self.rot)
-                self.rect = self.image.get_rect()
-                self.rect.center = self.pos
+                self.real_rect = self.image.get_rect()
+                self.real_rect.center = self.pos
                 self.acc = vec(GLOBU_SPEED, 0).rotate(-self.rot)
                 self.acc += self.vel * -1
                 self.vel += self.acc * self.game.dt
-                self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt **1.2 #manipuler
+                if hypot(vec(self.game.player.pos - self.pos).x, vec(self.game.player.pos - self.pos).y) <= 20:
+                    pass
+                else:
+                    self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt **1.2 #manipuler
+
                 self.game.collidewithmobs.remove(self)
                 self.hit_rect.centerx = self.pos.x
                 collide_with_collide(self, self.game.collidewithmobs2, 'x')
@@ -372,15 +378,15 @@ class Mob(pg.sprite.Sprite):
                 collide_with_collide(self, self.game.collidewithmobs2, 'y')
                 collide_with_collidem(self, self.game.collidewithmobs, 'y')
                 mobs_attack(self, self.game.playersprite, 'y')
-                self.rect.center = self.hit_rect.center
+                self.real_rect.center = self.hit_rect.center
                 self.game.collidewithmobs.add(self)
 
             else :
                 self.rot = (self.game.ship.pos - self.pos).angle_to(vec(1, 0))
                 self.footupdate()
                 self.get_dir()
-                self.rect = self.image.get_rect()
-                self.rect.center = self.pos
+                self.real_rect = self.image.get_rect()
+                self.real_rect.center = self.pos
                 self.acc = vec(GLOBU_SPEED, 0).rotate(-self.rot)
                 self.acc += self.vel * -1
                 self.vel += self.acc * self.game.dt
@@ -394,7 +400,7 @@ class Mob(pg.sprite.Sprite):
                 collide_with_collidem(self, self.game.collidewithmobs, 'x')
                 collide_with_collide(self, self.game.collidewithmobs2, 'y')
                 mobs_attack(self, self.game.playersprite, 'y')
-                self.rect.center = self.hit_rect.center
+                self.real_rect.center = self.hit_rect.center
                 self.game.collidewithmobs.add(self)
 
 
@@ -406,9 +412,10 @@ class Mob(pg.sprite.Sprite):
             self.game = game
             self.col = (0,0,255)
             self.mob = MOB
-            self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.rect.width, 10))
+            self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.real_rect.width, 10))
             self.image.fill(self.col)
-            self.rect = self.image.get_rect()
+            self.real_rect = self.image.get_rect()
+            self.rect = self.real_rect
 
         def update(self):
             if self.mob.life > int((self.mob.max_life/3)*2):
@@ -418,12 +425,12 @@ class Mob(pg.sprite.Sprite):
             else:
                 self.col = RED
             if self.mob.life > 0:
-                self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.rect.width, 6))
+                self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.real_rect.width, 6))
                 self.image.fill(self.col)
             else:
                 self.kill()
-            self.rect.x = self.mob.rect.x
-            self.rect.y = self.mob.rect.y - 6
+            self.real_rect.x = self.mob.real_rect.x
+            self.real_rect.y = self.mob.real_rect.y - 6
 
 
 
@@ -450,11 +457,12 @@ class Wall(pg.sprite.Sprite):
         self.game = game
         self.image_bank = game.wall_image_bank
         self.image = self.image_bank[wall]
-        self.rect = self.image.get_rect()
+        self.real_rect = self.image.get_rect()
+        self.rect = self.real_rect
         self.x = x
         self.y = y
-        self.rect.x = x * TILESIZE
-        self.rect.y = y * TILESIZE
+        self.real_rect.x = x * TILESIZE
+        self.real_rect.y = y * TILESIZE
 
 class Ground(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -464,10 +472,11 @@ class Ground(pg.sprite.Sprite):
         self.image_bank = game.ground_image_bank
         self.image = self.image_bank[0]
         self.rect = self.image.get_rect()
+        self.real_rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.x = x * TILESIZE
-        self.rect.y = y * TILESIZE
+        self.real_rect.x = x * TILESIZE
+        self.real_rect.y = y * TILESIZE
 
 class Ship(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -476,12 +485,12 @@ class Ship(pg.sprite.Sprite):
         self.game = game
         self.image_bank = game.ship_image_bank
         self.image = self.image_bank[0]
-
         self.rect = self.image.get_rect()
+        self.real_rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.x = x * TILESIZE
-        self.rect.y = y * TILESIZE
+        self.real_rect.x = x * TILESIZE
+        self.real_rect.y = y * TILESIZE
         self.max_life = 1000
         self.life = 1000
         self.pos = vec(x, y) * TILESIZE

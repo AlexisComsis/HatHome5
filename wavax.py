@@ -17,9 +17,10 @@ class Wavax(pg.sprite.Sprite):
         self.image_bank_lvl4 = game.wavax_image_bank_lvl4
         self.image = self.image_bank_lvl1[0]
         self.image_old = self.image
+        self.real_rect = self.image.get_rect()
         self.rect = self.image.get_rect()
-        self.rect.center = vec(0,0)
-        self.pos = self.rect.center
+        self.real_rect.center = vec(0,0)
+        self.pos = self.real_rect.center
         self.last_shot = 0
         self.energymax = 75
         self.energy = 75
@@ -76,8 +77,8 @@ class Wavax(pg.sprite.Sprite):
 
     def vrombissement(self):
         if self.shoot:
-            self.rect.centerx += int(random.randrange(0, 5, 1))
-            self.rect.centery += int(random.randrange(0, 5, 1))
+            self.real_rect.centerx += int(random.randrange(0, 5, 1))
+            self.real_rect.centery += int(random.randrange(0, 5, 1))
 
 
 
@@ -104,7 +105,7 @@ class Wavax(pg.sprite.Sprite):
         self.image = self.image_old
         self.image = pg.transform.rotate(self.image_old, self.rot)
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.rect.center = (self.game.player.rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec
         self.shoot = False
 
     def battery(self, start_x, end_x, image_empty):
@@ -137,7 +138,7 @@ class Wavax(pg.sprite.Sprite):
 
     def move_lvl2(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -152,12 +153,12 @@ class Wavax(pg.sprite.Sprite):
         else:
             self.image_old = self.image_bank_lvl2[0]
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.rect.center = (self.game.player.rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec
         self.shoot = False
 
     def move_lvl3(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -175,7 +176,7 @@ class Wavax(pg.sprite.Sprite):
             self.image_old = self.image_bank_lvl3[0]
 
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.rect.center = (self.game.player.rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec *1.2
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec *1.2
         self.shoot = False
 
 
@@ -183,7 +184,7 @@ class Wavax(pg.sprite.Sprite):
 
     def move_lvl4(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -200,12 +201,12 @@ class Wavax(pg.sprite.Sprite):
         #self.vecvec = vec(self.gun_distance + sqrt((self.image.get_height()/2)**2 + (self.image.get_width()/2)**2), 0).rotate(-(self.rot))
 
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.rect.center = (self.game.player.rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec * 1.5
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec * 1.5
 
     #    self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-    #    self.rect.center = self.game.player.rect.center + self.vecvec + self.levecteur #+ #vec(25,20)
+    #    self.real_rect.center = self.game.player.real_rect.center + self.vecvec + self.levecteur #+ #vec(25,20)
         self.shoot = False
-        self.pos = self.rect.center
+        self.pos = self.real_rect.center
 
         #self.image.fill((255,255,255))
 
@@ -220,7 +221,7 @@ class Wavax(pg.sprite.Sprite):
 
                     dir = vec(1, 0).rotate(-self.rot)
                     #dir = vec(1, 0).rotate(-self.rot)
-                    #self.pos = self.rect.center
+                    #self.pos = self.real_rect.center
 
                     pos = (self.game.player.pos) + dir * 75 #+ BARREL_OFFSET.rotate(-self.rot)
                     #self.game.wavax_shot.stop()
@@ -242,7 +243,7 @@ class Wavax(pg.sprite.Sprite):
 
                     dir = vec(1, 0).rotate(-self.rot)
                     #dir = vec(1, 0).rotate(-self.rot)
-                    #self.pos = self.rect.center
+                    #self.pos = self.real_rect.center
 
                     pos = (self.game.player.pos) + dir * 100 #+ BARREL_OFFSET.rotate(-self.rot)
                     #self.game.wavax_shot.stop()
@@ -264,7 +265,7 @@ class Wavax(pg.sprite.Sprite):
 
                     dir = vec(1, 0).rotate(-self.rot)
                     #dir = vec(1, 0).rotate(-self.rot)
-                    #self.pos = self.rect.center
+                    #self.pos = self.real_rect.center
 
                     pos = (self.game.player.pos) + dir * 125 #+ BARREL_OFFSET.rotate(-self.rot)
                     #self.game.wavax_shot.stop()
@@ -287,7 +288,7 @@ class Wavax(pg.sprite.Sprite):
 
                     dir = vec(1, 0).rotate(-self.rot)
                     #dir = vec(1, 0).rotate(-self.rot)
-                    #self.pos = self.rect.center
+                    #self.pos = self.real_rect.center
 
                     pos = (self.game.player.pos) + dir * 150 #+ BARREL_OFFSET.rotate(-self.rot)
                     #self.game.wavax_shot.stop()
@@ -298,35 +299,6 @@ class Wavax(pg.sprite.Sprite):
         if self.energy <= self.energymax and not self.game.player.mouse[0]:
             self.energy += self.consum*0.8
 
-
-
-    class Bar(pg.sprite.Sprite):
-        def __init__(self, gun, game):
-            self.groups = game.all_sprites
-            pg.sprite.Sprite.__init__(self, self.groups)
-            self.game = game
-            self.col = LIGHTBLUE
-            self.gun = gun
-            self.image = pg.Surface(((self.gun.energy / self.gun.energymax) * 32, 6))
-            self.rect = self.image.get_rect()
-
-        def update(self):
-            self.rect.x = self.gun.rect.x
-            self.rect.y = self.gun.rect.y
-
-            if self.gun.energy > 0:
-                self.image = pg.Surface(((self.gun.energy / self.gun.energymax) * 32, 6))
-                self.image.fill(self.col)
-            else:
-                self.kill()
-
-            if self.gun.energy > int((self.gun.energymax/3)*2):
-                self.col = LIGHTBLUE
-            elif self.gun.energy > int(self.gun.energymax/3):
-                self.col = BLUE
-            else:
-                self.col = PURPLE
-
 class Wavax_bullet(pg.sprite.Sprite):
     def __init__(self, game, pos):
         self.groups = game.all_sprites, game.bullets
@@ -334,15 +306,15 @@ class Wavax_bullet(pg.sprite.Sprite):
         self.game = game
         self.image = self.game.wavax_image_bank_lvl1[4]
         self.image_old = self.image
-
         self.rect = self.image.get_rect()
-        self.rect.center = (pos)
-        self.pos = vec(self.rect.center)
+        self.real_rect = self.image.get_rect()
+        self.real_rect.center = (pos)
+        self.pos = vec(self.real_rect.center)
         self.vector = self.game.player.gun.mousepossc - self.pos
         self.rot = self.vector.angle_to(vec(1, 0))
 
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        #self.rect.center = pos
+        #self.real_rect.center = pos
         self.bulletlifetime = WAVAX_BULLET_LIFETIME
         self.vel = self.game.player.gun.vecvec * WAVAX_BULLET_SPEED
         #spread = uniform(-GUN_SPREAD, GUN_SPREAD)
@@ -351,7 +323,7 @@ class Wavax_bullet(pg.sprite.Sprite):
 
     def update(self):
         self.pos += self.vel * self.game.dt
-        self.rect.center = self.pos
+        self.real_rect.center = self.pos
         if pg.sprite.spritecollideany(self, self.game.walls) or pg.sprite.spritecollideany(self, self.game.ships):
             self.kill()
 

@@ -18,9 +18,10 @@ class Gold45(pg.sprite.Sprite):
 
         self.image = self.image_bank_lvl1[0]
         self.image_old = self.image
-        self.rect = self.image.get_rect()
-        self.rect.center = vec(0,0)
-        self.pos = self.rect.center
+        self.real_rect = self.image.get_rect()
+        self.rect = self.real_rect
+        self.real_rect.center = vec(0,0)
+        self.pos = self.real_rect.center
         self.last_shot = 0
         self.lvl = 1
         self.cd = 0
@@ -97,7 +98,7 @@ class Gold45(pg.sprite.Sprite):
 
     def move_lvl1(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_real_rect.center = self.game.player.real_real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
 
@@ -111,12 +112,12 @@ class Gold45(pg.sprite.Sprite):
             self.image_old = self.image_bank_lvl1[0]
         self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.rect.center = self.game.player.rect.center + self.vecvec
+        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
         #self.image.fill((255,255,255))
 
     def move_lvl2(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -129,12 +130,12 @@ class Gold45(pg.sprite.Sprite):
             self.image_old = self.image_bank_lvl2[0]
         self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.rect.center = self.game.player.rect.center + self.vecvec
+        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
         #self.image.fill((255,255,255))
 
     def move_lvl3(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -147,12 +148,12 @@ class Gold45(pg.sprite.Sprite):
             self.image_old = self.image_bank_lvl3[0]
         self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.rect.center = self.game.player.rect.center + self.vecvec
+        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
         #self.image.fill((255,255,255))
 
     def move_lvl4(self):
 
-        #self.rect.center = self.game.player.rect.center
+        #self.real_rect.center = self.game.player.real_rect.center
         #self.game.player.pos # map --> player
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
@@ -165,7 +166,7 @@ class Gold45(pg.sprite.Sprite):
             self.image_old = self.image_bank_lvl4[0]
         self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.rect.center = self.game.player.rect.center + self.vecvec 
+        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
         #self.image.fill((255,255,255))
 
     def fire_lvl1(self):
@@ -178,7 +179,7 @@ class Gold45(pg.sprite.Sprite):
 
                 dir = vec(1, 0).rotate(-self.rot)
                 #dir = vec(1, 0).rotate(-self.rot)
-                #self.pos = self.rect.center
+                #self.pos = self.real_rect.center
 
                 pos = (self.game.player.pos) + dir * 75 #+ BARREL_OFFSET.rotate(-self.rot)
                 #self.game.gold45_shot.stop()
@@ -195,7 +196,7 @@ class Gold45(pg.sprite.Sprite):
                 self.last_shot = now
                 dir = vec(1, 0).rotate(-self.rot)
                 #dir = vec(1, 0).rotate(-self.rot)
-                #self.pos = self.rect.center
+                #self.pos = self.real_rect.center
                 pos = (self.game.player.pos) + dir * 75 #+ BARREL_OFFSET.rotate(-self.rot)
                 #self.game.gold45_shot.stop()
                 #self.game.gold45_shot.play()
@@ -221,13 +222,14 @@ class Gold45_bullet_lvl1(pg.sprite.Sprite):
         self.image_old = self.image
 
         self.rect = self.image.get_rect()
-        self.rect.center = (pos)
-        self.pos = vec(self.rect.center)
+        self.real_rect = self.rect
+        self.real_rect.center = (pos)
+        self.pos = vec(self.real_rect.center)
         self.vector = self.game.player.gun.mousepossc - self.pos
         self.rot = self.vector.angle_to(vec(1, 0))
 
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        #self.rect.center = pos
+        #self.real_rect.center = pos
         self.bulletlifetime = GOLD45_BULLET_LIFETIME
         self.vel = self.game.player.gun.vecvec * GOLD45_LVL1_BULLET_SPEED
         #spread = uniform(-GUN_SPREAD, GUN_SPREAD)
@@ -247,7 +249,7 @@ class Gold45_bullet_lvl1(pg.sprite.Sprite):
             hit.aware = 5000
 
         self.pos += self.vel * self.game.dt
-        self.rect.center = self.pos
+        self.real_rect.center = self.pos
 
 
 
@@ -263,14 +265,14 @@ class Gold45_bullet_sharp_lvl2(pg.sprite.Sprite):
         self.image = self.game.gold45_image_bank_lvl4[2]
         self.image_old = self.image
 
-        self.rect = self.image.get_rect()
-        self.rect.center = (pos)
-        self.pos = vec(self.rect.center)
+        self.real_rect = self.image.get_rect()
+        self.real_rect.center = (pos)
+        self.pos = vec(self.real_rect.center)
         self.vector = self.game.player.gun.mousepossc - self.pos
         self.rot = self.vector.angle_to(vec(1, 0))
 
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        #self.rect.center = pos
+        #self.real_rect.center = pos
         self.bulletlifetime = GOLD45_BULLET_LIFETIME
         self.vel = self.game.player.gun.vecvec * GOLD45_LVL2_BULLET_SPEED
         #spread = uniform(-GUN_SPREAD, GUN_SPREAD)
@@ -298,7 +300,7 @@ class Gold45_bullet_sharp_lvl2(pg.sprite.Sprite):
 
 
         self.pos += self.vel * self.game.dt
-        self.rect.center = self.pos
+        self.real_rect.center = self.pos
 
         if pg.time.get_ticks() - self.spawn_time > self.bulletlifetime:
             self.kill()

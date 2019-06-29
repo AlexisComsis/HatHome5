@@ -147,7 +147,7 @@ class Game:
 
     def new(self):
         #pg.mixer.music.play(-1)
-        self.all_sprites = pg.sprite.Group()
+        self.all_sprites = pg.sprite.LayeredUpdates()
         self.collidewithplayer = pg.sprite.Group()
         self.collidewithmobs = pg.sprite.Group()
         self.collidewithmobs2 = pg.sprite.Group()
@@ -202,7 +202,7 @@ class Game:
                     self.player = Player(self, col, row)
                     #self.weapon = Gold(self)
                 elif tile == 'G':
-                    Mob(self, col, row, 0)
+                    Mob(self, col, row)
 
                 elif tile == 'S':
                     self.ship = Ship(self, col, row)
@@ -255,17 +255,34 @@ class Game:
         self.bullets = pg.sprite.Group()
         self.bulletssharp = pg.sprite.Group()
         '''
+        #for sprite in self.all_sprites:
+        #    if isinstance(sprite, Mob):
+            #    sprite.draw_health()
+        #for sprite in self.all_sprites:
+        #    self.window.blit(sprite.image, self.camera.apply(sprite))
+        #self.all_sprites.draw(self.window)
+
         for sprite in self.all_sprites:
-                self.window.blit(sprite.image, self.camera.apply(sprite))
-
-
-
+            sprite.rect = self.camera.apply(sprite)
+        self.list = []
+        self.list.append(self.player)
+        self.list.append(self.player.gun)
+        for mob in self.mobs:
+            self.list.append(mob)
+        self.list.sort( key=lambda item: item.rect.centery)
+        for item in self.list:
+            self.all_sprites.change_layer(item, self.list.index(item))
+        print(self.list)
+        self.all_sprites.draw(self.window)
 
 
         Player.draw_player_health(self.window, 10, 10, self.player.life / self.player.max_life)
         Player.draw_player_stamina(self.window, 300, 10, self.player.stamina / self.player.max_stamina)
 
         pg.display.flip()
+
+
+
 
     def events(self):
         for event in pg.event.get():

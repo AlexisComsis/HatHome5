@@ -2,7 +2,7 @@ import pygame as pg
 from settings import *
 
 def collide_hit_rect(one, two):
-    return one.hit_rect.colliderect(two.rect)
+    return one.hit_rect.colliderect(two.real_rect)
 
 class Map:
     def __init__(self, filename):
@@ -23,10 +23,10 @@ class Camera:
         self.height = height
 
     def apply(self,entity):
-        return entity.rect.move(self.camera.topleft)
+        return entity.real_rect.move(self.camera.topleft)
 
     def update(self, target):
 
-        newx = int(WIDTH/2) - target.rect.center[0]
-        newy = int(HEIGHT/2) - target.rect.center[1]
+        newx = int(WIDTH/2) - target.real_rect.center[0]
+        newy = int(HEIGHT/2) - target.real_rect.center[1]
         self.camera = pg.Rect(newx, newy, self.width, self.height)

@@ -10,8 +10,9 @@ class Chest(pg.sprite.Sprite):
         self.image = self.image_bank[0]
         self.image_old = self.image
         self.pos = mobpos
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
+        self.real_rect = self.image.get_rect()
+        self.rect = self.real_rect
+        self.real_rect.center = self.pos
 
     def update(self):
-        self.rect.center = self.pos
+        self.real_rect.center = self.pos
