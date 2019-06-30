@@ -12,8 +12,8 @@ BLUE = (0, 35, 255)
 PURPLE = (208, 0, 255)
 
 # Game Settings
-WIDTH = 1920
-HEIGHT = 1080
+WIDTH = 1600
+HEIGHT = 900
 DIAGONAL = HEIGHT / WIDTH  #équation haut gauche bas droite : WIDTH x = HEIGHT y on calcul lautre avec
 FPS = 60
 TITLE = "HatHome"
@@ -34,6 +34,7 @@ SHIP_IMAGE = '\Ship.png'
 PLAYER_SPEED = 400
 PLAYER_BANK_IMG = '\SpritePlayer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 78, 96)
+INVINCIBILITY_TIME = 50
 
 # Mob
 GLOBU_IMG = '\GlobuzarSprite.png'
@@ -41,6 +42,7 @@ GLOBU_IMG_ANGRY = '\GlobuzarSpriteAngry.png'
 GLOBU_SPEED = 1000
 GLOBU_HIT_RECT = pg.Rect(0, 0, 52, 100)
 GLOBU_DROPCHEST = 0.01 #(4+1 chance / 100 car le 0 compt)
+GLOBU_RANGE_B_PLAYER = 20
 
 # [Weapons]
 

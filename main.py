@@ -2,8 +2,15 @@ import pygame as pg
 import sys
 from os import path
 from settings import *
-from sprites import *
+#from player ship ground globuzar wall ground import *
 from tilemap import *
+from player import *
+from ship import *
+from ground import *
+from globuzar import *
+from wall import *
+from ground import *
+
 #from gold45 import *
 #from wavax import *
 
@@ -274,7 +281,10 @@ class Game:
         self.list.sort( key=lambda item: item.rect.centery)
         for item in self.list:
             self.all_sprites.change_layer(item, self.list.index(item))
-        print(self.list)
+            try:
+                self.all_sprites.change_layer(item.bar, self.list.index(item))
+            except:
+                pass
         self.all_sprites.draw(self.window)
 
 
