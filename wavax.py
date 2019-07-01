@@ -189,24 +189,23 @@ class Wavax(pg.sprite.Sprite):
         #self.game.mousepos # screen --> mouse
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
         self.mousepossc = self.game.mousepos - self.translator # map --> mouse
-        self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.vector = self.mousepossc - self.game.player.pos  # player(refer to map) --> mouse(refer to map)
         self.rot = self.vector.angle_to(vec(self.gun_distance, 0))
+
+        self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         if ((self.rot < -90) or (self.rot > 90)):
             self.image_old = self.image_bank_lvl4[1]
         else:
             self.image_old = self.image_bank_lvl4[0]
-
         self.image = pg.transform.rotate(self.image_old, self.rot)
-        #self.vecvec = vec(self.gun_distance + sqrt((self.image.get_height()/2)**2 + (self.image.get_width()/2)**2), 0).rotate(-(self.rot))
+
+
+
 
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec * 1.5
-
-    #    self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-    #    self.real_rect.center = self.game.player.real_rect.center + self.vecvec + self.levecteur #+ #vec(25,20)
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec *1.2
         self.shoot = False
-        self.pos = self.real_rect.center
+
 
         #self.image.fill((255,255,255))
 

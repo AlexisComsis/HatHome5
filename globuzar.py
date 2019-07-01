@@ -73,6 +73,7 @@ class Mob(pg.sprite.Sprite):
         if self.life <= 0:
             self.state = False
             self.kill()
+            self.bar.kill()
         else:
             if self.distance < self.aware:
                 self.bank_image = self.bank_angry_image
@@ -104,22 +105,18 @@ class Mob(pg.sprite.Sprite):
             self.game = game
             self.col = (0,0,255)
             self.mob = MOB
-            self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.real_rect.width, 10))
-            self.image.fill(self.col)
-            self.real_rect = self.image.get_rect()
+            self.image_bank = self.game.globu_bar
+            self.real_rect = self.image_bank[0].get_rect()
             self.rect = self.real_rect
+            self.image = pg.Surface((self.image_bank[0].get_width(), self.image_bank[0].get_height()))
 
         def update(self):
-            if self.mob.life > int((self.mob.max_life/3)*2):
-                self.col = GREEN
-            elif self.mob.life > int(self.mob.max_life/3):
-                self.col = YELLOW
-            else:
-                self.col = RED
-            if self.mob.life > 0:
-                self.image = pg.Surface(((self.mob.life / self.mob.max_life) * self.mob.real_rect.width, 6))
-                self.image.fill(self.col)
-            else:
-                self.kill()
+            h = (self.mob.life / self.mob.max_life) * self.image_bank[0].get_width()
+            if h<0:
+                h = 0
+            start = (self.image_bank[0].copy()).subsurface((0,0, h, self.image_bank[0].get_height()))
+            self.image.blit(start, (0, 0))
+            end = (self.image_bank[1].copy()).subsurface((h, 0, self.image_bank[0].get_width()-h, self.image_bank[0].get_height()))
+            self.image.blit(end, (h, 0))
             self.real_rect.x = self.mob.real_rect.x
-            self.real_rect.y = self.mob.real_rect.y - 6
+            self.real_rect.y = self.mob.real_rect.y - 12

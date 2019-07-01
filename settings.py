@@ -46,6 +46,8 @@ GLOBU_SPEED = 1000
 GLOBU_HIT_RECT = pg.Rect(0, 0, 52, 100)
 GLOBU_DROPCHEST = 0.01 #(4+1 chance / 100 car le 0 compt)
 GLOBU_RANGE_B_PLAYER = 20
+GLOBU_LIFE = '\Globu_life.png'
+GLOBU_LIFE_EMPTY = '\Globu_life_empty.png'
 
 # [Weapons]
 
