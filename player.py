@@ -113,6 +113,8 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.bank_image = game.player_image_bank
+        self.bank_life_image = game.player_life_image_bank
+        self.bank_stamina_image = game.player_stamina_image_bank
         self.image = game.player_image_bank[0]
         self.real_rect = self.image.get_rect()
         self.rect = self.real_rect
@@ -223,7 +225,6 @@ class Player(pg.sprite.Sprite):
                 else:
                     self.image = self.bank_image[6+self.moovestat]
                     self.gun.triangle = 2
-        print(self.invincibility)
         if self.invincibility:
             self.image = pg.Surface((self.rect.width, self.rect.height))
             self.image.set_alpha(0)
@@ -241,7 +242,6 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         Player.countime += 1
-        print(Player.countime)
         #MOUVEMENT
         self.get_keys()
         self.pos += self.vel * self.game.dt
@@ -259,39 +259,24 @@ class Player(pg.sprite.Sprite):
         else:
             self.invincibility = False
 
-    def draw_player_health(surf, x, y, pct):
-        if pct < 0:
-            pct = 0
-        BAR_LENGTH = 260
-        BAR_HEIGHT = 30
-        fill = pct * BAR_LENGTH
-        outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
-        fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
-        if pct > 0.6:
-            col = GREEN
-        elif pct > 0.3:
-            col = YELLOW
-        else:
-            col = RED
-        pg.draw.rect(surf, col, fill_rect)
-        pg.draw.rect(surf, WHITE, outline_rect, 2)
+    def draw_player_health(self):
+        h = (self.life / self.max_life) * self.bank_life_image[0].get_width()
+        if h<0:
+            h = 0
+        start = (self.bank_life_image[0].copy()).subsurface((0,0, h, self.bank_life_image[0].get_height()))
+        self.game.window.blit(start, (10, 10))
+        end = (self.bank_life_image[1].copy()).subsurface((h, 0, self.bank_life_image[0].get_width()-h, self.bank_life_image[0].get_height()))
+        self.game.window.blit(end, (h+10, 10))
 
-    def draw_player_stamina(surf, x, y, pct):
-        if pct < 0:
-            pct = 0
-        BAR_LENGTH = 160
-        BAR_HEIGHT = 30
-        fill = pct * BAR_LENGTH
-        outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
-        fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
-        if pct > 0.6:
-            col = GREEN
-        elif pct > 0.3:
-            col = YELLOW
-        else:
-            col = RED
-        pg.draw.rect(surf, col, fill_rect)
-        pg.draw.rect(surf, PURPLE, outline_rect, 3)
+
+    def draw_player_stamina(self):
+        h = (self.stamina / self.max_stamina) * self.bank_stamina_image[0].get_width()
+        if h<0:
+            h = 0
+        start = (self.bank_stamina_image[0].copy()).subsurface((0,0, h, self.bank_stamina_image[0].get_height()))
+        self.game.window.blit(start, (300, 10))
+        end = (self.bank_stamina_image[1].copy()).subsurface((h, 0, self.bank_stamina_image[0].get_width()-h, self.bank_stamina_image[0].get_height()))
+        self.game.window.blit(end, (h+300, 10))
 
     countime = INVINCIBILITY_TIME+1
     def beattack(self, mob):

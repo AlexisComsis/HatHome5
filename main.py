@@ -125,6 +125,12 @@ class Game:
 
         #player
         self.player_image_bank = self.separate(pg.image.load(self.img_folder + PLAYER_BANK_IMG).convert_alpha(), 78)
+        self.player_life_image_bank = []
+        self.player_life_image_bank.append(pg.image.load(self.img_folder + PLAYER_LIFE))
+        self.player_life_image_bank.append(pg.image.load(self.img_folder + PLAYER_LIFE_EMPTY))
+        self.player_stamina_image_bank = []
+        self.player_stamina_image_bank.append(pg.image.load(self.img_folder + PLAYER_STAMINA))
+        self.player_stamina_image_bank.append(pg.image.load(self.img_folder + PLAYER_STAMINA_EMPTY))
 
         #wall
         self.wall_image_bank = self.separate(pg.image.load(self.img_folder + WALL_IMG).convert_alpha(), 50) # LIST 4 ELEMENT
@@ -288,9 +294,9 @@ class Game:
         self.all_sprites.draw(self.window)
 
 
-        Player.draw_player_health(self.window, 10, 10, self.player.life / self.player.max_life)
-        Player.draw_player_stamina(self.window, 300, 10, self.player.stamina / self.player.max_stamina)
 
+        self.player.draw_player_stamina()
+        self.player.draw_player_health()
         pg.display.flip()
 
 

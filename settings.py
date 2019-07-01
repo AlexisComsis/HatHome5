@@ -35,7 +35,10 @@ PLAYER_SPEED = 400
 PLAYER_BANK_IMG = '\SpritePlayer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 78, 96)
 INVINCIBILITY_TIME = 50
-
+PLAYER_LIFE = '\Life.png'
+PLAYER_LIFE_EMPTY = '\Life_empty.png'
+PLAYER_STAMINA = '\Stamina.png'
+PLAYER_STAMINA_EMPTY = '\Stamina_empty.png'
 # Mob
 GLOBU_IMG = '\GlobuzarSprite.png'
 GLOBU_IMG_ANGRY = '\GlobuzarSpriteAngry.png'
