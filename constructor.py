@@ -72,7 +72,10 @@ class Constructor:
         self.wavax_construct()
 
         #ship
-        self.game.ship_image_bank = self.separate(pg.image.load(self.ship_folder + SHIP_IMAGE).convert_alpha(), 200)
+        self.game.ship_image_bank = []
+        self.game.ship_image_bank.append(pg.image.load(self.ship_folder + SHIP_IMAGE).convert_alpha())
+        self.game.ship_image_bank.append(pg.image.load(self.ship_folder + SHIP_IMAGE_EMPTY).convert_alpha())
+
 
 
         #wavegun

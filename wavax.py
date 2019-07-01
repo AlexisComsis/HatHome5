@@ -203,7 +203,7 @@ class Wavax(pg.sprite.Sprite):
 
 
         self.levecteur = vec(-(self.image.get_width()/2),-(self.image.get_height()/2))
-        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec *1.2
+        self.real_rect.center = (self.game.player.real_rect.center )  + self.levecteur + vec(self.width/2, self.height/2) + self.vecvec *1.5
         self.shoot = False
 
 

@@ -94,26 +94,6 @@ class Game:
 
     def draw(self):
         self.window.fill(BGCOLOR)
-        #self.draw_grid()
-        '''
-        self.all_sprites = pg.sprite.Group()
-        self.collidewithplayer = pg.sprite.Group()
-        self.collidewithmobs = pg.sprite.Group()
-        self.chests = pg.sprite.Group()
-        self.walls = pg.sprite.Group()
-        self.grounds = pg.sprite.Group()
-        self.mobs = pg.sprite.Group()
-        self.playersprite = pg.sprite.Group()
-        self.weapons = pg.sprite.Group()
-        self.bullets = pg.sprite.Group()
-        self.bulletssharp = pg.sprite.Group()
-        '''
-        #for sprite in self.all_sprites:
-        #    if isinstance(sprite, Mob):
-            #    sprite.draw_health()
-        #for sprite in self.all_sprites:
-        #    self.window.blit(sprite.image, self.camera.apply(sprite))
-        #self.all_sprites.draw(self.window)
 
         for sprite in self.all_sprites:
             sprite.rect = self.camera.apply(sprite)
@@ -122,8 +102,14 @@ class Game:
         self.list.append(self.player.gun)
         for mob in self.mobs:
             self.list.append(mob)
+        for item in self.list:
+            if self.player.gun.lvl == 4 and isinstance(item, Wavax):
+                item.rect.centery += 8
+
         self.list.sort( key=lambda item: item.rect.centery)
         for item in self.list:
+            if self.player.gun.lvl == 4 and isinstance(item, Wavax):
+                item.rect.centery -= 8
             self.all_sprites.change_layer(item, self.list.index(item))
             try:
                 self.all_sprites.change_layer(item.bar, self.list.index(item))

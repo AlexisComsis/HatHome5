@@ -29,37 +29,6 @@ class Gold45(pg.sprite.Sprite):
         self.triangle = 1
         self.testweapons = 0
 
-    def bank_construct(self):
-        #LVL 1
-        self.image_bank_lvl1 = list()
-        self.image_bank_lvl1.append(pg.image.load(self.game.img_folder + GOLD45_LVL1_IMAGE).convert_alpha())
-        self.image_bank_lvl1.append(pg.transform.flip(self.image_bank_lvl1[0], False, True))
-        self.image_bank_lvl1.append(pg.image.load(self.game.img_folder + GOLD45_BULLET_LVL1_IMAGE).convert_alpha())
-        #LVL 2
-        self.image_bank_lvl2 = list()
-        self.image_bank_lvl2.append(pg.image.load(self.game.img_folder + GOLD45_LVL2_IMAGE).convert_alpha())
-        self.image_bank_lvl2.append(pg.transform.flip(self.image_bank_lvl2[0], False, True))
-        self.image_bank_lvl2.append(pg.image.load(self.game.img_folder + GOLD45_LVL2_ACTIVATE_IMAGE).convert_alpha())
-        self.image_bank_lvl2.append(pg.transform.flip(self.image_bank_lvl2[2], False, True))
-        self.image_bank_lvl2.append(pg.image.load(self.game.img_folder + GOLD45_BULLET_LVL2_IMAGE).convert_alpha())
-        #LVL 3
-        self.image_bank_lvl3 = list()
-        self.image_bank_lvl3.append(pg.image.load(self.game.img_folder + GOLD45_LVL3_IMAGE).convert_alpha())
-        self.image_bank_lvl3.append(pg.transform.flip(self.image_bank_lvl3[0], False, True))
-        self.image_bank_lvl3.append(pg.image.load(self.game.img_folder + GOLD45_BULLET_LVL3_IMAGE).convert_alpha())
-        #LVL 4
-        self.image_bank_lvl4 = list()
-        self.image_bank_lvl4.append(pg.image.load(self.game.img_folder + GOLD45_LVL4_IMAGE).convert_alpha())
-        self.image_bank_lvl4.append(pg.transform.flip(self.image_bank_lvl4[0], False, True))
-        self.image_bank_lvl4.append(pg.image.load(self.game.img_folder + GOLD45_BULLET_LVL4_IMAGE).convert_alpha())
-        '''
-            self.handgun_image_bank = list()
-            self.handgun_image_bank = self.gun_construct(pg.image.load(img_folder + GOLD45_IMAGE).convert_alpha())
-            self.handgun_shot = pg.mixer.Sound(fire_sound_folder + GOLD45_BULLET_FIRESOUND)
-            self.handgun_shot.set_volume(0.15)
-            self.handgun_bullet_image = self.separate(pg.image.load(img_folder + GOLD45_BULLET_IMAGE).convert_alpha(), 7, 2)
-        '''
-
 
     def update(self):
 
@@ -76,17 +45,17 @@ class Gold45(pg.sprite.Sprite):
 
 
         if self.lvl == 1:
-            self.move_lvl1()
+            self.move(self.image_bank_lvl1)
             self.fire_lvl1()
         if self.lvl == 2:
-            self.move_lvl2()
+            self.move(self.image_bank_lvl2)
             self.fire_lvl2()
         if self.lvl == 3:
-            self.move_lvl3()
-            self.fire_lvl3()
+            self.move(self.image_bank_lvl3)
+            self.fire_lvl2()
         if self.lvl == 4:
-            self.move_lvl4()
-            self.fire_lvl4()
+            self.move(self.image_bank_lvl4)
+            self.fire_lvl2()
 
     def lvl_up(self):
         if self.lvl < 4:
@@ -96,78 +65,18 @@ class Gold45(pg.sprite.Sprite):
         if self.lvl > 1:
             self.lvl -= 1
 
-    def move_lvl1(self):
-
-        #self.real_real_rect.center = self.game.player.real_real_rect.center
-        #self.game.player.pos # map --> player
-        #self.game.mousepos # screen --> mouse
-
+    def move(self, bank):
         self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
         self.mousepossc = self.game.mousepos - self.translator # map --> mouse
         self.vector = self.mousepossc - self.game.player.pos  # player(refer to map) --> mouse(refer to map)
         self.rot = self.vector.angle_to(vec(self.gun_distance, 0))
         if ((self.rot < -90) or (self.rot > 90)):
-            self.image_old = self.image_bank_lvl1[1]
+            self.image_old = bank[1]
         else:
-            self.image_old = self.image_bank_lvl1[0]
+            self.image_old = bank[0]
         self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
         self.image = pg.transform.rotate(self.image_old, self.rot)
         self.real_rect.center = self.game.player.real_rect.center + self.vecvec
-        #self.image.fill((255,255,255))
-
-    def move_lvl2(self):
-
-        #self.real_rect.center = self.game.player.real_rect.center
-        #self.game.player.pos # map --> player
-        #self.game.mousepos # screen --> mouse
-        self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
-        self.mousepossc = self.game.mousepos - self.translator # map --> mouse
-        self.vector = self.mousepossc - self.game.player.pos  # player(refer to map) --> mouse(refer to map)
-        self.rot = self.vector.angle_to(vec(self.gun_distance, 0))
-        if ((self.rot < -90) or (self.rot > 90)):
-            self.image_old = self.image_bank_lvl2[1]
-        else:
-            self.image_old = self.image_bank_lvl2[0]
-        self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
-        self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
-        #self.image.fill((255,255,255))
-
-    def move_lvl3(self):
-
-        #self.real_rect.center = self.game.player.real_rect.center
-        #self.game.player.pos # map --> player
-        #self.game.mousepos # screen --> mouse
-        self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
-        self.mousepossc = self.game.mousepos - self.translator # map --> mouse
-        self.vector = self.mousepossc - self.game.player.pos  # player(refer to map) --> mouse(refer to map)
-        self.rot = self.vector.angle_to(vec(self.gun_distance, 0))
-        if ((self.rot < -90) or (self.rot > 90)):
-            self.image_old = self.image_bank_lvl3[1]
-        else:
-            self.image_old = self.image_bank_lvl3[0]
-        self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
-        self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
-        #self.image.fill((255,255,255))
-
-    def move_lvl4(self):
-
-        #self.real_rect.center = self.game.player.real_rect.center
-        #self.game.player.pos # map --> player
-        #self.game.mousepos # screen --> mouse
-        self.translator = vec(self.game.camera.camera.x, self.game.camera.camera.y) # map --> screen
-        self.mousepossc = self.game.mousepos - self.translator # map --> mouse
-        self.vector = self.mousepossc - self.game.player.pos  # player(refer to map) --> mouse(refer to map)
-        self.rot = self.vector.angle_to(vec(self.gun_distance, 0))
-        if ((self.rot < -90) or (self.rot > 90)):
-            self.image_old = self.image_bank_lvl4[1]
-        else:
-            self.image_old = self.image_bank_lvl4[0]
-        self.vecvec = vec(self.gun_distance, 0).rotate(-(self.rot))
-        self.image = pg.transform.rotate(self.image_old, self.rot)
-        self.real_rect.center = self.game.player.real_rect.center + self.vecvec
-        #self.image.fill((255,255,255))
 
     def fire_lvl1(self):
         if self.game.player.mouse[0]:
@@ -185,11 +94,11 @@ class Gold45(pg.sprite.Sprite):
                 #self.game.gold45_shot.stop()
                 #self.game.gold45_shot.play()
 
-                Gold45_bullet_lvl1(self.game, pos)
+                Gold45_bullet(self.game, pos)
                 #self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
     def fire_lvl2(self):
 
-        if self.game.player.keys[pg.K_h]:
+        if self.game.player.mouse[2]:
             now = pg.time.get_ticks()
 
             if now - self.last_shot > GOLD45_BULLET_SHARP_FIRECOOLDOWN:
@@ -200,7 +109,7 @@ class Gold45(pg.sprite.Sprite):
                 pos = (self.game.player.pos) + dir * 75 #+ BARREL_OFFSET.rotate(-self.rot)
                 #self.game.gold45_shot.stop()
                 #self.game.gold45_shot.play()
-                Gold45_bullet_sharp_lvl2(self.game, pos)
+                Gold45_bullet_sharp(self.game, pos)
                 #self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
 
         self.fire_lvl1()
@@ -213,7 +122,7 @@ class Gold45(pg.sprite.Sprite):
 
 
 
-class Gold45_bullet_lvl1(pg.sprite.Sprite):
+class Gold45_bullet(pg.sprite.Sprite):
     def __init__(self, game, pos):
         self.groups = game.all_sprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -257,7 +166,7 @@ class Gold45_bullet_lvl1(pg.sprite.Sprite):
             self.kill()
 
 
-class Gold45_bullet_sharp_lvl2(pg.sprite.Sprite):
+class Gold45_bullet_sharp(pg.sprite.Sprite):
     def __init__(self, game, pos):
         self.groups = game.all_sprites, game.bulletssharp
         pg.sprite.Sprite.__init__(self, self.groups)

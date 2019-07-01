@@ -29,6 +29,7 @@ MUSIC = '\\inquietant.mp3'
 
 # ship
 SHIP_IMAGE = '\Ship.png'
+SHIP_IMAGE_EMPTY = '\Ship_empty.png'
 
 # Player
 PLAYER_SPEED = 400

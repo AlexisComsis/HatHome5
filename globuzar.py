@@ -92,6 +92,8 @@ class Mob(pg.sprite.Sprite):
     def move_collide(self):
         if self.rect.colliderect(self.game.player.rect):
             self.game.player.beattack(self)
+        if self.rect.colliderect(self.game.ship.rect):
+            self.game.ship.beattack(self)
         if hypot(vec(self.game.player.pos - self.pos).x, vec(self.game.player.pos - self.pos).y) <= GLOBU_RANGE_B_PLAYER:
             pass
         else:
