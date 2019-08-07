@@ -41,7 +41,8 @@ class Constructor:
         #pg.mixer.music.play(-1)
 
         #player
-        self.game.player_image_bank = self.separate(pg.image.load(self.img_folder + PLAYER_BANK_IMG).convert_alpha(), 78)
+        self.game.player_image_bank_up = self.separate(pg.image.load(self.img_folder + PLAYER_BANK_IMG_UP).convert_alpha(), 78)
+        self.game.player_image_bank_down = self.separate(pg.image.load(self.img_folder + PLAYER_BANK_IMG_DOWN).convert_alpha(), 78)
         self.game.player_life_image_bank = []
         self.game.player_life_image_bank.append(pg.image.load(self.img_folder + PLAYER_LIFE))
         self.game.player_life_image_bank.append(pg.image.load(self.img_folder + PLAYER_LIFE_EMPTY))
@@ -115,6 +116,9 @@ class Constructor:
         self.game.gold45_image_bank_lvl1.append(pg.image.load(self.gold45_folder + GOLD45_LVL1_IMAGE).convert_alpha())
         self.game.gold45_image_bank_lvl1.append(pg.transform.flip(self.game.gold45_image_bank_lvl1[0], False, True))
         self.game.gold45_image_bank_lvl1.append(pg.image.load(self.gold45_folder + GOLD45_BULLET_LVL1_IMAGE).convert_alpha())
+        self.game.gold45_image_bank_lvl1.append(pg.image.load(self.gold45_folder + GOLD45_LVL_IMAGE_TRUE).convert_alpha())
+        self.game.gold45_image_bank_lvl1.append(pg.transform.flip(self.game.gold45_image_bank_lvl1[2], False, True))
+
         #LVL 2
         self.game.gold45_image_bank_lvl2 = list()
         self.game.gold45_image_bank_lvl2.append(pg.image.load(self.gold45_folder + GOLD45_LVL2_IMAGE).convert_alpha())

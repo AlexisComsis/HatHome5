@@ -33,7 +33,8 @@ SHIP_IMAGE_EMPTY = '\Ship_empty.png'
 
 # Player
 PLAYER_SPEED = 400
-PLAYER_BANK_IMG = '\SpritePlayer.png'
+PLAYER_BANK_IMG_UP = '\SpritePlayer_Down.png'
+PLAYER_BANK_IMG_DOWN = '\SpritePlayer_Up.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 78, 96)
 INVINCIBILITY_TIME = 50
 PLAYER_LIFE = '\Life.png'
@@ -56,6 +57,7 @@ GLOBU_LIFE_EMPTY = '\Globu_life_empty.png'
 #LVL 1
 GOLD45_LVL1_IMAGE = '\Gold45.1.png'
 GOLD45_BULLET_LVL1_IMAGE = '\Gold45_bullet.1.png'
+GOLD45_LVL_IMAGE_TRUE = '\Gold45.1.True.png'
 #LVL 2
 GOLD45_LVL2_IMAGE = '\Gold45.2.png'
 GOLD45_BULLET_LVL2_IMAGE = '\Gold45_bullet.2.png'

@@ -105,7 +105,6 @@ class Mob(pg.sprite.Sprite):
             self.groups = game.all_sprites
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
-            self.col = (0,0,255)
             self.mob = MOB
             self.image_bank = self.game.globu_bar
             self.real_rect = self.image_bank[0].get_rect()

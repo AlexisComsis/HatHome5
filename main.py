@@ -11,6 +11,7 @@ from globuzar import *
 from wall import *
 from ground import *
 from constructor import *
+from menu import *
 
 #from gold45 import *
 #from wavax import *
@@ -30,6 +31,7 @@ class Game:
     def new(self):
         #pg.mixer.music.play(-1)
         self.all_sprites = pg.sprite.LayeredUpdates()
+        self.hud = pg.sprite.Group()
         self.collidewithplayer = pg.sprite.Group()
         self.collidewithmobs = pg.sprite.Group()
         self.collidewithmobs2 = pg.sprite.Group()
@@ -102,10 +104,10 @@ class Game:
         self.list.append(self.player.gun)
         for mob in self.mobs:
             self.list.append(mob)
+
         for item in self.list:
             if self.player.gun.lvl == 4 and isinstance(item, Wavax):
                 item.rect.centery += 8
-
         self.list.sort( key=lambda item: item.rect.centery)
         for item in self.list:
             if self.player.gun.lvl == 4 and isinstance(item, Wavax):
@@ -121,6 +123,7 @@ class Game:
 
         self.player.draw_player_stamina()
         self.player.draw_player_health()
+
         pg.display.flip()
 
 
@@ -141,6 +144,7 @@ class Game:
         pass
 
 # create the game object
+M = Menu()
 g = Game()
 g.show_start_screen()
 while True:

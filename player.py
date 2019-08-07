@@ -112,10 +112,12 @@ class Player(pg.sprite.Sprite):
         self.groups = game.all_sprites, game.playersprite
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.bank_image = game.player_image_bank
+        self.bank_image = game.player_image_bank_up
+        self.bank_image_up = game.player_image_bank_up
+        self.bank_image_down = game.player_image_bank_down
         self.bank_life_image = game.player_life_image_bank
         self.bank_stamina_image = game.player_stamina_image_bank
-        self.image = game.player_image_bank[0]
+        self.image = game.player_image_bank_up[0]
         self.real_rect = self.image.get_rect()
         self.rect = self.real_rect
         self.hit_rect = self.real_rect
@@ -123,6 +125,7 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.pos = vec(x, y) * TILESIZE
         self.moovestat = 0
+        self.upstat = 0
         self.timer = 0
         self.max_life = 200
         self.life = 200
@@ -182,6 +185,8 @@ class Player(pg.sprite.Sprite):
 
         if self.vel.x != 0 or self.vel.y != 0:
             self.footupdate()
+        else:
+            self.upupdate()
         if self.vel.x != 0 and self.vel.y != 0:
             self.vel *= 0.7071
 
@@ -194,7 +199,10 @@ class Player(pg.sprite.Sprite):
 
         x = mouse[0]
         y = mouse[1]
-
+        if self.upstat == 0:
+            self.bank_image = self.bank_image_up
+        if self.upstat == 1:
+            self.bank_image = self.bank_image_down
         if y >= HEIGHT/2: #BOTTOM
             if x >= WIDTH/2: #RIGHT BOTTOM
                 if  DIAGONAL * x < y : #BOTTOM TRIANGLE
@@ -239,6 +247,19 @@ class Player(pg.sprite.Sprite):
             self.moovestat = 1
         else:
             self.timer = 0
+
+    def upupdate(self):
+        self.timer += 1
+
+        if self.timer <=15:
+            self.upstat = 0
+        elif self.timer <= 31:
+            self.upstat = 1
+        else:
+            self.timer = 0
+        print(self.upstat)
+
+
 
     def update(self):
         Player.countime += 1
